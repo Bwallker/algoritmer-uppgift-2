@@ -12,14 +12,6 @@ final class Vertex {
 		this.name = name;
 	}
 
-	public int getIndegree() {
-		return indegree;
-	}
-
-	public void setIndegree(int indegree) {
-		this.indegree = indegree;
-	}
-
 	public boolean hasNoMoreParents() {
 		return indegree == 0;
 	}
