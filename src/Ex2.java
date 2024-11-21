@@ -172,6 +172,8 @@ public class Ex2 {
 			System.out.println("Cycle detected in the graph");
 			return;
 		}
+		System.out.println();
+		System.out.println();
 		System.out.println("Graph nodes in topological order:");
 		for (String n : nodes) {
 			System.out.println(n);
