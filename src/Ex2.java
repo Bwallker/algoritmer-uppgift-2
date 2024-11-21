@@ -21,11 +21,15 @@ final class Vertex {
 	}
 
 	public boolean hasNoMoreParents() {
-		return --indegree == 0;
+		return indegree == 0;
 	}
 
 	public void incrementIndegree() {
 		++indegree;
+	}
+
+	public void decrementIndegree() {
+		--indegree;
 	}
 
 	public String getName() {
@@ -71,7 +75,7 @@ final class Graph {
 		int counter = 0;
 		List<String> result = new ArrayList<>();
 		for (Vertex vertex : vertices.values()) {
-			if (vertex.getIndegree() == 0) {
+			if (vertex.hasNoMoreParents()) {
 				q.add(vertex);
 			}
 		}
@@ -80,6 +84,7 @@ final class Graph {
 			++counter;
 			result.add(parentVertex.getName());
 			for (Vertex childVertex : incidenceLists.get(parentVertex.getName())) {
+				childVertex.decrementIndegree();
 				if (childVertex.hasNoMoreParents()) {
 					q.add(childVertex);
 				}
