@@ -101,8 +101,6 @@ public class Ex2 {
 
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jf.getSelectedFile();
-			// System.out.println("Selected file: " + selectedFile.getAbsolutePath()); //
-			// Debug
 
 			readGraph(selectedFile); // Read nodes and edges from the selected file
 		}
@@ -130,8 +128,9 @@ public class Ex2 {
 
 						for (String n : nodeNames) {
 							System.out.println(n.trim()); // Trim and print the node name
-							graph.addVertex(n.trim());
+
 							// Here you should create a node in the graph
+							graph.addVertex(n.trim());
 						}
 
 					} catch (Exception e) { // Something wrong in the graph file
@@ -157,8 +156,9 @@ public class Ex2 {
 					for (String e : edges) { // For all edges
 						String[] edgePair = e.trim().split(":"); // Split edge components v1:v2
 						System.out.println(edgePair[0].trim() + " " + edgePair[1].trim());
-						graph.addEdge(edgePair[0].trim(), edgePair[1].trim());
+
 						// Here you should create an edge in the graph
+						graph.addEdge(edgePair[0].trim(), edgePair[1].trim());
 					}
 
 				} catch (Exception e) { // Something is wrong, Edges should be in format v1:v2
@@ -181,7 +181,6 @@ public class Ex2 {
 		}
 		System.out.println("End of graph");
 	}
-
 }
 
 @SuppressWarnings("serial")
