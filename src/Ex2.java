@@ -36,6 +36,7 @@ final class Vertex {
 final class Graph {
 	/// Represents a graph where each key is a node and the value is the set of nodes that that node points to.
 	private final Map<String, Set<Vertex>> incidenceLists = new HashMap<>();
+	// Maps the name of a vertex onto an object containing metadata about it.
 	private final Map<String, Vertex> vertices = new HashMap<>();
 
 	public void addVertex(String nodeName) {
