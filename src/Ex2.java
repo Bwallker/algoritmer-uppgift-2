@@ -3,6 +3,7 @@ import java.io.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+@SuppressWarnings("unused")
 final class Vertex {
 	private int indegree = 0;
 	final private String name;
