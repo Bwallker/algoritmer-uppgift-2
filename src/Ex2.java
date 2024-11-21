@@ -4,46 +4,21 @@ import javax.swing.*;
 import java.awt.event.*;
 
 @SuppressWarnings("unused")
-final class Vertex {
-	private int indegree = 0;
-	final private String name;
-
-	public Vertex(String name) {
-		this.name = name;
-	}
-
-	public boolean hasNoMoreParents() {
-		return indegree == 0;
-	}
-
-	public void incrementIndegree() {
-		++indegree;
-	}
-
-	public void decrementIndegree() {
-		--indegree;
-	}
-
-	public String getName() {
-		return name;
-	}
-}
-
 final class Graph {
 	/// Represents a graph where each key is a node and the value is the set of nodes that that node points to.
-	private final Map<String, Set<Vertex>> incidenceLists = new HashMap<>();
+	private final Map<String, Set<String>> incidenceLists = new HashMap<>();
 	// Maps the name of a vertex onto an object containing metadata about it.
-	private final Map<String, Vertex> vertices = new HashMap<>();
+	private final Map<String, Integer> inDegrees = new HashMap<>();
 
 	public void addVertex(String nodeName) {
 		if (nodeName == null) {
 			throw new IllegalArgumentException("Node name must not be null.");
 		}
-		if (incidenceLists.containsKey(nodeName) || vertices.containsKey(nodeName)) {
+		if (incidenceLists.containsKey(nodeName) || inDegrees.containsKey(nodeName)) {
 			throw new IllegalArgumentException("Node name must be unique.");
 		}
 		incidenceLists.putIfAbsent(nodeName, new HashSet<>());
-		vertices.putIfAbsent(nodeName, new Vertex(nodeName));
+		inDegrees.putIfAbsent(nodeName, 0);
 	}
 
 	public void addEdge(String key, String value) {
@@ -53,36 +28,41 @@ final class Graph {
 		if (!incidenceLists.containsKey(key)) {
 			throw new IllegalArgumentException("Key must be a node.");
 		}
-		if (!vertices.containsKey(value)) {
+		if (!inDegrees.containsKey(value)) {
 			throw new IllegalArgumentException("Value must be a node.");
 		}
-		Vertex valueVertex = vertices.get(value);
-		incidenceLists.get(key).add(valueVertex);
-		valueVertex.incrementIndegree();
+		incidenceLists.get(key).add(value);
+		inDegrees.computeIfPresent(value, (_, v) -> v + 1);
 	}
 
 	/// Returns a list of nodes in topological order by name.
 	public List<String> topSort() throws CycleDetectedException {
-		Queue<Vertex> q = new LinkedList<Vertex>();
+		Queue<String> q = new LinkedList<String>();
 		int counter = 0;
 		List<String> result = new ArrayList<>();
-		for (Vertex vertex : vertices.values()) {
-			if (vertex.hasNoMoreParents()) {
-				q.add(vertex);
+
+		// Clone the in-degrees map to avoid modifying the original map.
+		Map<String, Integer> inDegrees = new HashMap<>(this.inDegrees);
+
+		for (Map.Entry<String, Integer> entry : inDegrees.entrySet()) {
+			String name = entry.getKey();
+			int inDegree = entry.getValue();
+			if (inDegree == 0) {
+				q.add(name);
 			}
 		}
 		while (!q.isEmpty()) {
-			Vertex parentVertex = q.poll();
+			String parentVertex = q.poll();
 			++counter;
-			result.add(parentVertex.getName());
-			for (Vertex childVertex : incidenceLists.get(parentVertex.getName())) {
-				childVertex.decrementIndegree();
-				if (childVertex.hasNoMoreParents()) {
+			result.add(parentVertex);
+			for (String childVertex : incidenceLists.get(parentVertex)) {
+				inDegrees.computeIfPresent(childVertex, (_, v) -> v - 1);
+				if (inDegrees.get(childVertex) == 0) {
 					q.add(childVertex);
 				}
 			}
 		}
-		if (counter != vertices.size()) {
+		if (counter != inDegrees.size()) {
 			throw new CycleDetectedException();
 		}
 		return result;
