@@ -32,7 +32,7 @@ final class Graph {
 			throw new IllegalArgumentException("Value must be a node.");
 		}
 		incidenceLists.get(key).add(value);
-		inDegrees.computeIfPresent(value, (_, v) -> v + 1);
+		inDegrees.computeIfPresent(value, (_k, v) -> v + 1);
 	}
 
 	/// Returns a list of nodes in topological order by name.
@@ -56,7 +56,7 @@ final class Graph {
 			++counter;
 			result.add(parentVertex);
 			for (String childVertex : incidenceLists.get(parentVertex)) {
-				inDegrees.computeIfPresent(childVertex, (_, v) -> v - 1);
+				inDegrees.computeIfPresent(childVertex, (_k, v) -> v - 1);
 				if (inDegrees.get(childVertex) == 0) {
 					q.add(childVertex);
 				}
