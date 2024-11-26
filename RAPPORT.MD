@@ -9,8 +9,10 @@
 ### Bidrag
 
 #### Ben
-
+Skrev koden
 
 #### Gabriella
+Testade koden och skrev rapporten
 
 #### Cecilia
+Testade koden och skrev rapporten
