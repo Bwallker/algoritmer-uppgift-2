@@ -9,10 +9,10 @@
 ### Bidrag
 
 #### Ben
-Skrev koden
+Skrev en stol del av koden
 
 #### Gabriella
-Testade koden och skrev rapporten
+Granskade och testade koden. Skrev rapporten.
 
 #### Cecilia
-Testade koden och skrev rapporten
+Granskade och testade koden. Skrev rapporten.
